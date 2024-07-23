@@ -12,7 +12,8 @@
     "@ant-design/icons-vue": "^7.0.1",
     "ant-design-vue": "4.x",
     "axios": "^1.7.2",
-    "vue": "^3.4.31"
+    "vue": "^3.4.31",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@unocss/preset-icons": "^0.61.5",

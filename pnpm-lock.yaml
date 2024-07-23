@@ -17,6 +17,9 @@ dependencies:
   vue:
     specifier: ^3.4.31
     version: 3.4.33
+  vue-router:
+    specifier: '4'
+    version: 4.4.0(vue@3.4.33)
 
 devDependencies:
   '@unocss/preset-icons':
@@ -1135,6 +1138,10 @@ packages:
       '@vue/compiler-dom': 3.4.33
       '@vue/shared': 3.4.33
 
+  /@vue/devtools-api@6.6.3:
+    resolution: {integrity: sha512-0MiMsFma/HqA6g3KLKn+AGpL1kgKhFWszC9U29NfpWK5LE7bjeXxySWJrOJ77hBz+TBrBQ7o4QJqbPbqbs8rJw==}
+    dev: false
+
   /@vue/reactivity@3.4.33:
     resolution: {integrity: sha512-B24QIelahDbyHipBgbUItQblbd4w5HpG3KccL+YkGyo3maXyS253FzcTR3pSz739OTphmzlxP7JxEMWBpewilA==}
     dependencies:
@@ -2117,6 +2124,15 @@ packages:
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
+
+  /vue-router@4.4.0(vue@3.4.33):
+    resolution: {integrity: sha512-HB+t2p611aIZraV2aPSRNXf0Z/oLZFrlygJm+sZbdJaW6lcFqEDQwnzUBXn+DApw+/QzDU/I9TeWx9izEjTmsA==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': 6.6.3
+      vue: 3.4.33
+    dev: false
 
   /vue-types@3.0.2(vue@3.4.33):
     resolution: {integrity: sha512-IwUC0Aq2zwaXqy74h4WCvFCUtoV0iSWr0snWnE9TnU18S66GAQyqQbRf2qfJtUuiFsBf6qp0MEwdonlwznlcrw==}
