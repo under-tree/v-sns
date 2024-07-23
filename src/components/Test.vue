@@ -3,7 +3,7 @@ import { ref } from 'vue'
 </script>
 
 <template>
-  <div class="w-200 h-150 bg-blue"></div>
+  <a-button type="primary">Primary Button</a-button>
 </template>
 
 <style scoped></style>
