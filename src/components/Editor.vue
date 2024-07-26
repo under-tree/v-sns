@@ -1,0 +1,75 @@
+<script setup>
+import { ref, computed } from 'vue'
+import { useLocalStorage } from '@vueuse/core'
+import { marked } from 'marked'
+
+const inputContainer = ref(null)
+const input = useLocalStorage('vsns-editor', '')
+const output = computed(() => marked(input.value))
+
+function handlePaste(e) {
+  const items = e.clipboardData.items
+  for (let item of items) {
+    if (item.kind === 'file' && item.type.startsWith('image/')) {
+      const file = item.getAsFile()
+      const reader = new FileReader()
+      reader.onload = function (e) {
+        const base64Image = e.target.result
+        const markdownImage = `![Image](${base64Image})`
+        insertAtCursor(inputContainer.value, markdownImage)
+        input.value += markdownImage
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+}
+
+function insertAtCursor(field, value) {
+  if (document.selection) {
+    field.focus()
+    const sel = document.selection.createRange()
+    sel.text = value
+  } else if (field.selectionStart || field.selectionStart === 0) {
+    const startPos = field.selectionStart
+    const endPos = field.selectionEnd
+    field.value = field.value.substring(0, startPos) + value + field.value.substring(endPos, field.value.length)
+  } else {
+    field.value += value
+  }
+}
+</script>
+
+<template>
+  <div class="editor">
+    <textarea class="input" ref="inputContainer" v-model="input" @paste="handlePaste"></textarea>
+    <div class="output" v-html="output"></div>
+  </div>
+</template>
+
+
+<style scoped>
+.editor {
+  height: 100vh;
+  display: flex;
+}
+
+.input,
+.output {
+  overflow: auto;
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 0 20px;
+}
+
+.input {
+  border: none;
+  border-right: 1px solid #ccc;
+  resize: none;
+  outline: none;
+  background-color: #f6f6f6;
+  font-size: 14px;
+  font-family: 'Monaco', courier, monospace;
+  padding: 20px;
+}
+</style>
