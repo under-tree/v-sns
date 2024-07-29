@@ -42,15 +42,24 @@ function insertAtCursor(field, value) {
 <template>
   <div class="editor">
     <textarea class="input" ref="inputContainer" v-model="input" @paste="handlePaste"></textarea>
-    <div class="output" v-html="output"></div>
+    <div class="markdown-body output" v-html="output"></div>
   </div>
+
+  <div class="flex mb-10">
+    <div class="mr-8 m-auto">
+      <a-button type="primary">发布文章</a-button>
+      <a-button class="ml-4">设为内推</a-button>
+    </div>
+  </div>
+
 </template>
 
 
 <style scoped>
 .editor {
-  height: 100vh;
+  height: 80vh;
   display: flex;
+  margin: 20px;
 }
 
 .input,
@@ -59,7 +68,7 @@ function insertAtCursor(field, value) {
   width: 50%;
   height: 100%;
   box-sizing: border-box;
-  padding: 0 20px;
+  padding: 20px 20px;
 }
 
 .input {
@@ -70,6 +79,5 @@ function insertAtCursor(field, value) {
   background-color: #f6f6f6;
   font-size: 14px;
   font-family: 'Monaco', courier, monospace;
-  padding: 20px;
 }
 </style>
