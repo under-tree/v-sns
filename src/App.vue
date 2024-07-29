@@ -1,14 +1,9 @@
 <script setup>
-import Test from './components/Test.vue'
+import Navbar from './components/Navbar.vue'
 </script>
 
 <template>
-  <!-- <Test /> -->
-  <ul>
-    <li><router-link to="/">Home</router-link></li>
-    <li><router-link to="/about">About</router-link></li>
-    <li><router-link to="/editor">Editor</router-link></li>
-  </ul>
+  <Navbar />
   <router-view></router-view>
 </template>
 
