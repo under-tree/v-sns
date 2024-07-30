@@ -1,16 +1,18 @@
 <script setup>
-import { ref, onMounted } from 'vue'
 import { BankOutlined, BookOutlined, EnvironmentOutlined } from '@ant-design/icons-vue'
-import { getProfile } from '../apis/api.js'
 import UserCard from '../components/UserCard.vue'
 import ItemList from '../components/ItemList.vue'
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { getProfile } from '../apis/api.js'
 
 onMounted(() => {
-  getProfile().then(res => {
+  getProfile(route.params.id).then(res => {
     userData.value = res.data.data
   })
 })
 
+const route = useRoute()
 const userData = ref({})
 
 </script>
