@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { BankOutlined, BookOutlined, HomeOutlined } from '@ant-design/icons-vue'
+import { BankOutlined, BookOutlined, EnvironmentOutlined } from '@ant-design/icons-vue'
 import { getProfile } from '../apis/api.js'
 import UserCard from '../components/UserCard.vue'
 import ItemList from '../components/ItemList.vue'
@@ -28,7 +28,7 @@ const userData = ref({})
         <div class="pl-1/8">
           <p><bank-outlined /><span class="ml-2">{{ userData.school }}</span></p>
           <p><book-outlined /><span class="ml-2">{{ userData.major }}</span></p>
-          <p><home-outlined /><span class="ml-2">{{ userData.address }}</span></p>
+          <p><environment-outlined /><span class="ml-2">{{ userData.address }}</span></p>
         </div>
       </UserCard>
     </div>
