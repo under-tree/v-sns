@@ -1,19 +1,17 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { BankOutlined, BookOutlined, HomeOutlined } from '@ant-design/icons-vue'
+import { getProfile } from '../apis/api.js'
 import UserCard from '../components/UserCard.vue'
 import ItemList from '../components/ItemList.vue'
 
-const userData = ref({
-  nickname: 'JY',
-  nUpvote: 110,
-  nPost: 119,
-  nComment: 120,
-  school: '中山大学',
-  major: '计算机科学与技术',
-  address: '深圳市 - 南山区',
-
+onMounted(() => {
+  getProfile().then(res => {
+    userData.value = res.data.data
+  })
 })
+
+const userData = ref({})
 
 </script>
 
