@@ -29,6 +29,10 @@ export async function getPost(postId) {
   return axios.get('/posts/' + postId)
 }
 
+export async function getNotices() {
+  return axios.get('/notices')
+}
+
 export async function postPost(title, content) {
   return axios({
     url: '/posts/insert',
