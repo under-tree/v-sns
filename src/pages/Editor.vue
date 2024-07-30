@@ -1,7 +1,9 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { marked } from 'marked'
+import { postPost } from '../apis/api'
+
 
 const inputContainer = ref(null)
 const input = useLocalStorage('vsns-editor', '')
@@ -37,9 +39,39 @@ function insertAtCursor(field, value) {
     field.value += value
   }
 }
+
+const openPost = ref(false)
+const openJob = ref(false)
+const data = reactive({
+  title: '',
+  descriptions: '',
+})
+
+const showPostModal = () => {
+  openPost.value = true
+}
+
+const onPostFinish = () => {
+  openPost.value = false
+  postPost(data.title, input.value).then(res=>{console.log(res)})
+}
+
+const showJobModal = () => {
+  openJob.value = true
+}
+
+const onJobFinish = () => {
+  openJob.value = false
+  postJob(data.title, input.value).then(res=>{console.log(res)})
+}
+
+const onFinishFailed = errorInfo => {
+  console.log('Failed:', errorInfo)
+}
 </script>
 
 <template>
+
   <div class="editor">
     <textarea class="input" ref="inputContainer" v-model="input" @paste="handlePaste"></textarea>
     <div class="markdown-body output" v-html="output"></div>
@@ -47,10 +79,66 @@ function insertAtCursor(field, value) {
 
   <div class="flex mb-10">
     <div class="mr-8 m-auto">
-      <a-button type="primary">发布文章</a-button>
-      <a-button class="ml-4">设为内推</a-button>
+      <a-button type="primary" @click="showPostModal">发布文章</a-button>
+      <a-button class="ml-4" @click="showJobModal">设为内推</a-button>
     </div>
   </div>
+
+  <a-modal v-model:open="openPost" title="发布文章" :footer="null">
+
+    <div class="h-8"></div>
+
+    <a-form
+      :model="data"
+      name="basic"
+      autocomplete="off"
+      @finish="onPostFinish"
+      @finishFailed="onFinishFailed"
+    >
+
+      <a-form-item label="标题" name="title" :rules="[{ required: true, message: '请输入标题！' }]">
+        <a-input v-model:value="data.title" />
+      </a-form-item>
+
+      <a-form-item label="描述" name="descrption" :rules="[{ required: true, message: '请输入描述！' }]">
+        <a-input v-model:value="data.descrption" />
+      </a-form-item>
+
+      <a-form-item :wrapper-col="{ offset: 10, span: 16 }">
+        <a-button type="primary" html-type="submit">发布</a-button>
+      </a-form-item>
+
+    </a-form>
+
+  </a-modal>
+
+  <a-modal v-model:open="openJob" title="发布内推" :footer="null">
+
+    <div class="h-8"></div>
+
+    <a-form
+      :model="data"
+      name="basic"
+      autocomplete="off"
+      @finish="onJobFinish"
+      @finishFailed="onFinishFailed"
+    >
+
+      <a-form-item label="标题" name="title" :rules="[{ required: true, message: '请输入标题！' }]">
+        <a-input v-model:value="data.title" />
+      </a-form-item>
+
+      <a-form-item label="描述" name="descrption" :rules="[{ required: true, message: '请输入描述！' }]">
+        <a-input v-model:value="data.descrption" />
+      </a-form-item>
+
+      <a-form-item :wrapper-col="{ offset: 10, span: 16 }">
+        <a-button type="primary" html-type="submit">发布</a-button>
+      </a-form-item>
+
+    </a-form>
+
+  </a-modal>
 
 </template>
 
