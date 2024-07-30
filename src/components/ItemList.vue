@@ -6,8 +6,8 @@ import { getPosts } from '../apis/api'
 
 onMounted(() => {
   getPosts().then(res => {
-    data.value = res.data
-    // data.value = res.data.data.rows
+    // data.value = res.data
+    data.value = res.data.data.rows
   })
 })
 

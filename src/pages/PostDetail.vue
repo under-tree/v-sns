@@ -6,12 +6,12 @@ import { getPost } from '../apis/api'
 
 onMounted(() => {
   getPost(route.params.id).then(res => {
-    data.value = res.data
+    data.value = res.data.data
   })
 })
 
 const route = useRoute()
-const data = ref({})
+const data = ref({ comments: { rows: [] } })
 
 </script>
 
@@ -21,10 +21,10 @@ const data = ref({})
     <div class="markdown-body mb-6 p-6 rounded-xl shadow-2xl bg-white" v-html="marked(data.content || '')"></div>
 
     <div class="p-6 rounded-xl shadow-2xl bg-white">
-      <a-comment v-for="comment in data.comments">
+      <a-comment v-for="comment in data.comments.rows">
 
         <template #actions>
-          <span key="comment-basic-reply-to">Reply to</span>
+          <span key="comment-basic-reply-to">Reply to {{ comment.toNickname }}</span>
         </template>
 
         <template #author><a>{{ comment.nickname }}</a></template>
