@@ -104,7 +104,7 @@ const onFinishFailed = errorInfo => {
           @click="getCaptcha().then(res => { data = res.data.data })">
       </div>
 
-      <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+      <a-form-item :wrapper-col="{ offset: 10, span: 16 }">
         <a-button type="primary" html-type="submit">登录</a-button>
       </a-form-item>
 
@@ -144,7 +144,7 @@ const onFinishFailed = errorInfo => {
           @click="getCaptcha().then(res => { data = res.data.data })">
       </div>
 
-      <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
+      <a-form-item :wrapper-col="{ offset: 10, span: 16 }">
         <a-button type="primary" html-type="submit">注册</a-button>
       </a-form-item>
 
