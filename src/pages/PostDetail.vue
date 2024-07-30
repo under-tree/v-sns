@@ -1,8 +1,9 @@
 <script setup>
+import { LikeOutlined } from '@ant-design/icons-vue'
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { marked } from 'marked'
-import { getPost } from '../apis/api'
+import { getPost, newUpvote, newComment } from '../apis/api'
 
 onMounted(() => {
   getPost(route.params.id).then(res => {
@@ -11,14 +12,59 @@ onMounted(() => {
 })
 
 const route = useRoute()
+const router = useRouter()
 const data = ref({ comments: { rows: [] } })
+const input = ref('')
 
 </script>
 
 <template>
   <main class="max-w-180 m-0 m-auto mb-8">
 
+    <div class="mb-6 rounded-xl shadow-2xl bg-white">
+
+      <div class="h-24 flex rounded-xl">
+
+        <h1 class="ml-8 m-auto">{{ data.title }} </h1>
+
+        <a-tooltip placement="left" color="blue">
+          <a-avatar
+            class="mr-8 m-auto hover:cursor-pointer"
+            :size="64"
+            :src="data.avatar"
+            @click="router.push(`/users/${data.userId}`)"
+          />
+          <template #title> 别忘了点赞哦 </template>
+        </a-tooltip>
+
+      </div>
+
+      <div class="h-12 flex">
+
+        <div class="ml-12 m-auto">
+          <span>{{ data.nickname }}</span> | <span>{{ data.createTime }}</span>
+        </div>
+
+        <div class="mr-12 m-auto">
+          <like-outlined class="hover:cursor-pointer" @click="newUpvote(data.postId)" />
+          {{ data.nUpvote }}
+        </div>
+
+      </div>
+
+    </div>
+
     <div class="markdown-body mb-6 p-6 rounded-xl shadow-2xl bg-white" v-html="marked(data.content || '')"></div>
+
+    <div class="h-64 mb-6 rounded-xl shadow-2xl bg-white">
+      <a-textarea class="z-1" v-model:value="input" placeholder="发表评论" size="large" :rows="6" />
+
+      <div class="mt-4 flex">
+        <a-button class="mr-8 m-auto z-1" type="primary" @click="newComment(input, route.params.id, data.userId)">
+          发表
+        </a-button>
+      </div>
+    </div>
 
     <div class="p-6 rounded-xl shadow-2xl bg-white">
       <a-comment v-for="comment in data.comments.rows">
@@ -31,6 +77,10 @@ const data = ref({ comments: { rows: [] } })
 
         <template #avatar>
           <a-avatar :src="comment.avatar" />
+        </template>
+
+        <template #datetime>
+          <span>{{ comment.createTime }}</span>
         </template>
 
         <template #content>
