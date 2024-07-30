@@ -1,18 +1,32 @@
 <script setup>
+import { EyeOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons-vue'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { EyeOutlined, LikeOutlined, MessageOutlined } from '@ant-design/icons-vue'
 import { getPosts } from '../apis/api'
 
 onMounted(() => {
-  getPosts().then(res => {
-    // data.value = res.data
+  getPosts(page.value).then(res => {
     data.value = res.data.data.rows
   })
 })
 
+function nextPage() {
+  getPosts(page.value).then(res => {
+    data.value = res.data.data.rows
+  })
+  page.value += 1
+}
+
+function prevPage() {
+  getPosts(page.value).then(res => {
+    data.value = res.data.data.rows
+  })
+  page.value -= 1
+}
+
 const router = useRouter()
 const data = ref([])
+const page = ref(1)
 </script>
 
 <template>
@@ -40,6 +54,11 @@ const data = ref([])
         :src="item.coverPicture" />
     </div>
 
+  </div>
+
+  <div class="">
+    <a-button @click="prevPage">上一页</a-button>
+    <a-button @click="nextPage">下一页</a-button>
   </div>
 </template>
 
