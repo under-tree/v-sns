@@ -9,7 +9,15 @@ export async function userSignIn(username, password, authkey, authcode) {
   return axios({
     url: `/auth/login?userKey=${authkey}&code=${authcode}`,
     method: 'post',
-    headers: { username, password }
+    data: { username, password },
+  })
+}
+
+export async function userSignUp(username, password, authkey, authcode) {
+  return axios({
+    url: `/auth/register?userKey=${authkey}&code=${authcode}`,
+    method: 'post',
+    data: { username, password },
   })
 }
 
@@ -18,5 +26,17 @@ export async function getPosts() {
 }
 
 export async function getPost(postId) {
-  return axios.get(`/posts/${postId}?_embed=comments`)
+  return axios.get('/posts/' + postId)
+}
+
+export async function postPost(title, content) {
+  return axios({
+    url: '/posts/insert',
+    method: 'post',
+    data: { title, content }
+  })
+}
+
+export async function getProfile() {
+  return axios.get('/user/info')
 }
