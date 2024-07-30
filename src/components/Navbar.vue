@@ -31,6 +31,7 @@ const onSignInFinish = values => {
   console.log('Success:', values)
   userSignIn(formState.username, formState.password, data.value.userKey, formState.authcode).then(
     res => {
+      location.reload()
       console.log(res.data.data.token)
       setToken(res.data.data.token)
     }

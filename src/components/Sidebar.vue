@@ -1,36 +1,47 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useTokenStore } from '../stores/user.js'
+import { getProfile } from '../apis/api.js'
+import { getNotices } from '../apis/api.js'
 
-const router = useRouter()
+onMounted(() => {
+  getProfile().then(res => {
+    userData.value = res.data.data
+  })
 
-const userData = ref({
-  nickname: 'JY',
-  nUpvote: 110,
-  nPost: 119,
-  nComment: 120,
+  getNotices().then(res => {
+    noticesData.value = res.data.data.rows
+  })
 })
 
-const noticesData = ref([
-  { title: '关于举办某某活动的通知' },
-  { title: '关于召开某某会议的通知' },
-  { title: '关于开设某某课程的通知' },
-])
+const router = useRouter()
+const { isLogin, setToken } = useTokenStore()
+
+const userData = ref({})
+const noticesData = ref([])
+
+const onSignOut = () => {
+  setToken('')
+  location.reload()
+}
 
 </script>
 
 <template>
 
-  <UserCard :userData="userData" @click-avatar="router.push('/user')">
+  <UserCard v-if="isLogin" class="mb-8" :userData="userData" @click-avatar="router.push('/user')">
     <div class="my-8 flex justify-around">
       <div><a-button type="primary" size="large"><router-link to="/editor">发 布 文 章</router-link></a-button></div>
-      <div><a-button size="large">退 出 登 录</a-button></div>
+      <div><a-button size="large" @click="onSignOut">退 出 登 录</a-button></div>
     </div>
   </UserCard>
 
-  <div class="h-8"></div>
+  <div v-else class="h-20 mb-8 rounded-xl shadow-2xl bg-white flex">
+    <p class="m-auto">登录查看更多内容</p>
+  </div>
 
-  <div class="rounded-xl shadow-2xl">
+  <div class="w-80 rounded-xl shadow-2xl">
     <a-card title="公告">
       <p v-for="item in noticesData">{{ item.title }}</p>
     </a-card>
