@@ -2,9 +2,9 @@
 import { BankOutlined, BookOutlined, EnvironmentOutlined } from '@ant-design/icons-vue'
 import UserCard from '../components/UserCard.vue'
 import Items from '../components/Items.vue'
-import { ref, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { getProfile, getPostsById } from '../apis/api.js'
+import { getProfile, getPostsById, getJobsById, getResourcesById } from '../apis/api.js'
 
 onMounted(() => {
   getProfile(route.params.id).then(res => {
@@ -18,6 +18,37 @@ onMounted(() => {
 const route = useRoute()
 const userData = ref({})
 const data = ref([])
+const current = ref(['posts'])
+const items = ref([
+  {
+    key: 'posts',
+    label: '文章',
+  },
+  {
+    key: 'job',
+    label: '内推',
+  },
+  {
+    key: 'resource',
+    label: '资源',
+  },
+])
+
+watch(current, x => {
+  if (x[0] === 'posts') {
+    getPostsById(userData.value.userId).then(res => {
+      data.value = res.data.data.rows
+    })
+  } else if (x[0] === 'job') {
+    getJobsById(userData.value.userId).then(res => {
+      data.value = res.data.data.rows
+    })
+  } else if (x[0] === 'resource') {
+    getResourcesById(userData.value.userId).then(res => {
+      data.value = res.data.data.rows
+    })
+  }
+})
 
 </script>
 
@@ -40,7 +71,9 @@ const data = ref([])
     </div>
 
     <div class="w-3/5 mx-8">
-      <Items path="posts" :data="data" />
+      <a-menu class="mb-4 rounded-xl shadow-2xl" v-model:selectedKeys="current" mode="horizontal" :items="items" />
+
+      <Items :path="current" :data="data" />
     </div>
 
   </div>
