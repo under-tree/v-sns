@@ -57,6 +57,7 @@ const onFinishFailed = errorInfo => {
       <div class="mr-6"><router-link to="/">首页</router-link></div>
       <div class="mr-6"><router-link to="/activity">活动</router-link></div>
       <div class="mr-6"><router-link to="/job">内推</router-link></div>
+      <div class="mr-6"><router-link to="/resource">资源</router-link></div>
     </div>
 
     <a-input-search
