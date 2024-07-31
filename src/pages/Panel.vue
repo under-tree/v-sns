@@ -1,20 +1,23 @@
 <script setup>
 import { BankOutlined, BookOutlined, EnvironmentOutlined } from '@ant-design/icons-vue'
 import UserCard from '../components/UserCard.vue'
-import ItemList from '../components/ItemList.vue'
+import Items from '../components/Items.vue'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { getProfile } from '../apis/api.js'
+import { getProfile, getPostsById } from '../apis/api.js'
 
 onMounted(() => {
   getProfile(route.params.id).then(res => {
     userData.value = res.data.data
-    console.log(userData.value.userId)
+    getPostsById(userData.value.userId).then(res => {
+      data.value = res.data.data.rows
+    })
   })
 })
 
 const route = useRoute()
 const userData = ref({})
+const data = ref([])
 
 </script>
 
@@ -37,7 +40,7 @@ const userData = ref({})
     </div>
 
     <div class="w-3/5 mx-8">
-      <ItemList />
+      <Items path="posts" :data="data" />
     </div>
 
   </div>

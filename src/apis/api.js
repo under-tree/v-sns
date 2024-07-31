@@ -33,6 +33,10 @@ export async function getPosts(page) {
   return axios.get(`/posts?page=${page}&pageSize=7`)
 }
 
+export async function getPostsById(userId) {
+  return axios.get(`/posts?userId=${userId}`)
+}
+
 export async function getPost(postId) {
   return axios.get('/posts/' + postId)
 }
