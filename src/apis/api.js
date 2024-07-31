@@ -53,6 +53,10 @@ export async function getJobs() {
   return axios.get('/jobs')
 }
 
+export async function getJobsById(userId) {
+  return axios.get('/user/jobs')
+}
+
 export async function getJob(jobId) {
   return axios.get('/jobs/' + jobId)
 }
@@ -67,6 +71,10 @@ export async function postJob(title, content) {
 
 export async function getResources() {
   return axios.get('/resourse')
+}
+
+export async function getResourcesById() {
+  return axios.get('/user/resources')
 }
 
 export async function getResource(resourceId) {
