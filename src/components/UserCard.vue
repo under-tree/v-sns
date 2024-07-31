@@ -11,7 +11,7 @@ defineEmits(['click-avatar'])
 
     <div class="text-center">
       <img
-        src="/avatar.png"
+        :src="userData.avatar"
         alt="avatar"
         @click="$emit('click-avatar')"
         class="w-25 h-25 m-0 m-auto mt-12 rounded-full relative z-1 hover:cursor-pointer"
