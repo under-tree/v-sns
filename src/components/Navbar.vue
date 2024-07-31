@@ -4,7 +4,7 @@ import { ref, reactive } from 'vue'
 import { useTokenStore } from '../stores/user.js'
 import { getCaptcha, userSignIn, userSignUp } from '../apis/api'
 
-const { setToken } = useTokenStore()
+const { token, setToken } = useTokenStore()
 const data = ref({})
 const openSignInModal = ref(false)
 const openSignUpModal = ref(false)
@@ -51,6 +51,10 @@ const onSignUpFinish = values => {
 const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo)
 }
+
+const toAdmin = () => {
+  location.href = 'http://localhost:8888?token=' + token
+}
 </script>
 
 <template>
@@ -71,6 +75,7 @@ const onFinishFailed = errorInfo => {
     />
 
     <div class="mr-10 m-auto flex">
+      <div class="ml-6 hover:cursor-pointer" @click="toAdmin">后台</div>
       <div class="ml-6 hover:cursor-pointer" @click="showSignUpModal">注册</div>
       <div class="ml-6 hover:cursor-pointer" @click="showSignInModal">登录</div>
     </div>
