@@ -43,7 +43,7 @@ const onSignOut = () => {
 
   <div class="w-80 rounded-xl shadow-2xl">
     <a-card title="公告">
-      <p v-for="item in noticesData">{{ item.title }}</p>
+      <p v-for="item in noticesData" class="hover:cursor-pointer" @click="router.push(`/notice/${item.id}`)">{{ item.title }}</p>
     </a-card>
   </div>
 
