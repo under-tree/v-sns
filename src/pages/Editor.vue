@@ -1,8 +1,11 @@
 <script setup>
+import { message } from 'ant-design-vue'
+import { UploadOutlined } from '@ant-design/icons-vue'
 import { ref, computed, reactive } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { marked } from 'marked'
-import { postPost } from '../apis/api'
+import { useTokenStore } from '../stores/user.js'
+import { postPost, postJob } from '../apis/api'
 
 
 const inputContainer = ref(null)
@@ -53,7 +56,7 @@ const showPostModal = () => {
 
 const onPostFinish = () => {
   openPost.value = false
-  postPost(data.title, input.value).then(res=>{console.log(res)})
+  postPost(data.title, input.value, fileLink.value).then(res => { console.log(res) })
 }
 
 const showJobModal = () => {
@@ -62,11 +65,26 @@ const showJobModal = () => {
 
 const onJobFinish = () => {
   openJob.value = false
-  postJob(data.title, input.value).then(res=>{console.log(res)})
+  postJob(data.title, input.value).then(res => { console.log(res) })
 }
 
 const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo)
+}
+
+const { token } = useTokenStore()
+const fileLink = ref('')
+
+const onFileChange = info => {
+  if (info.file.status !== 'uploading') {
+    console.log(info.file, info.fileList)
+  }
+  if (info.file.status === 'done') {
+    message.success(`${info.file.name} 文件上传成功`)
+    fileLink.value = info.file.response.msg
+  } else if (info.file.status === 'error') {
+    message.error(`${info.file.name} 文件上传失败`)
+  }
 }
 </script>
 
@@ -88,13 +106,7 @@ const onFinishFailed = errorInfo => {
 
     <div class="h-8"></div>
 
-    <a-form
-      :model="data"
-      name="basic"
-      autocomplete="off"
-      @finish="onPostFinish"
-      @finishFailed="onFinishFailed"
-    >
+    <a-form :model="data" name="basic" autocomplete="off" @finish="onPostFinish" @finishFailed="onFinishFailed">
 
       <a-form-item label="标题" name="title" :rules="[{ required: true, message: '请输入标题！' }]">
         <a-input v-model:value="data.title" />
@@ -103,6 +115,17 @@ const onFinishFailed = errorInfo => {
       <a-form-item label="描述" name="descrption" :rules="[{ required: true, message: '请输入描述！' }]">
         <a-input v-model:value="data.descrption" />
       </a-form-item>
+
+      <a-upload list-type="picture" action="/api/resourse/upload" :headers="{ token }" @change="onFileChange">
+        <a-button>
+          <template #icon>
+            <UploadOutlined />
+          </template>
+          上传封面图片
+        </a-button>
+      </a-upload>
+
+      <div class="h-4"></div>
 
       <a-form-item :wrapper-col="{ offset: 10, span: 16 }">
         <a-button type="primary" html-type="submit">发布</a-button>
@@ -116,13 +139,7 @@ const onFinishFailed = errorInfo => {
 
     <div class="h-8"></div>
 
-    <a-form
-      :model="data"
-      name="basic"
-      autocomplete="off"
-      @finish="onJobFinish"
-      @finishFailed="onFinishFailed"
-    >
+    <a-form :model="data" name="basic" autocomplete="off" @finish="onJobFinish" @finishFailed="onFinishFailed">
 
       <a-form-item label="标题" name="title" :rules="[{ required: true, message: '请输入标题！' }]">
         <a-input v-model:value="data.title" />
