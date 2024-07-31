@@ -10,27 +10,24 @@ onMounted(() => {
     isPost.value = true
     getPost(route.params.id).then(res => {
       data.value = res.data.data
-      console.log(res.data.data)
     })
   } else if (route.fullPath.startsWith('/activity')) {
+    isActivity.value = true
     getActivity(route.params.id).then(res => {
       data.value = res.data.data
-      console.log(res.data.data)
     })
   } else if (route.fullPath.startsWith('/job')) {
+    isJob.value = true
     getJob(route.params.id).then(res => {
       data.value = res.data.data
-      console.log(res.data.data)
     })
   } else if (route.fullPath.startsWith('/resource')) {
     getResource(route.params.id).then(res => {
       data.value = res.data.data
-      console.log(res.data.data)
     })
   } else if (route.fullPath.startsWith('/notice')) {
     getNotice(route.params.id).then(res => {
       data.value = res.data.data
-      console.log(res.data.data)
     })
   }
 })
@@ -40,6 +37,8 @@ const router = useRouter()
 const data = ref({ comments: { rows: [] } })
 const input = ref('')
 const isPost = ref(false)
+const isJob = ref(false)
+const isActivity = ref(false)
 
 </script>
 
@@ -76,6 +75,18 @@ const isPost = ref(false)
     </div>
 
     <div class="markdown-body mb-6 p-6 rounded-xl shadow-2xl bg-white" v-html="marked(data.content || '')"></div>
+
+    <div v-if="isJob" class="flex">
+      <div class="mr-8 m-auto">
+        <a-button type="primary" @click="">上传简历</a-button>
+      </div>
+    </div>
+
+    <div v-if="isActivity" class="flex">
+      <div class="mr-8 m-auto">
+        <a-button type="primary" @click="">参加活动</a-button>
+      </div>
+    </div>
 
     <div v-if="isPost" class="h-64 mb-6 rounded-xl shadow-2xl bg-white">
       <a-textarea class="z-1" v-model:value="input" placeholder="发表评论" size="large" :rows="6" />
