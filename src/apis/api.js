@@ -21,26 +21,102 @@ export async function userSignUp(username, password, authkey, authcode) {
   })
 }
 
-export async function getPosts() {
-  return axios.get('/posts')
+export async function getProfile(userId) {
+  if (userId) {
+    return axios.get('/user/info?userId=' + userId)
+  } else {
+    return axios.get('/user/info')
+  }
+}
+
+export async function getPosts(page) {
+  return axios.get(`/posts?page=${page}&pageSize=7`)
 }
 
 export async function getPost(postId) {
   return axios.get('/posts/' + postId)
 }
 
-export async function getNotices() {
-  return axios.get('/notices')
+export async function postPost(title, content, coverPicture) {
+  return axios({
+    url: '/posts',
+    method: 'post',
+    data: { title, content, coverPicture }
+  })
 }
 
-export async function postPost(title, content) {
+export async function getJobs() {
+  return axios.get('/jobs')
+}
+
+export async function getJob(jobId) {
+  return axios.get('/jobs/' + jobId)
+}
+
+export async function postJob(title, content) {
   return axios({
-    url: '/posts/insert',
+    url: '/jobs',
     method: 'post',
     data: { title, content }
   })
 }
 
-export async function getProfile() {
-  return axios.get('/user/info')
+export async function getResources() {
+  return axios.get('/resourse')
+}
+
+export async function getResource(resourceId) {
+  return axios.get('/resourse/' + resourceId)
+}
+
+export async function postResource(title, content) {
+  return axios({
+    url: '/resourse',
+    method: 'post',
+    data: { title, content }
+  })
+}
+
+export async function getNotices() {
+  return axios.get('/notices')
+}
+
+export async function getNotice(noticeId) {
+  return axios.get('/notices/' + noticeId)
+}
+
+export async function getActivities() {
+  return axios.get('/activities')
+}
+
+export async function getActivity(activityId) {
+  return axios.get('/activities/' + activityId)
+}
+
+export async function uploadFile(data) {
+  return axios({
+    url: '/resourse/upload',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
+export async function newUpvote(postId) {
+  return axios.put('/posts/' + postId)
+}
+
+export async function newComment(content, postId, replyTo) {
+  return axios({
+    url: '/posts/comment',
+    method: 'post',
+    data: {
+      postId: postId,
+      pid: 0,
+      toUid: replyTo,
+      content: content,
+    }
+  })
 }

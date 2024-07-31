@@ -5,8 +5,6 @@ const whiteList = [
   '/auth/captcha',
   '/auth/login',
   '/auth/register',
-  '/posts',
-  '/notices',
 ]
 
 const instance = axios.create({
