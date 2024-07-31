@@ -11,17 +11,19 @@ onMounted(() => {
 })
 
 function nextPage() {
+  page.value += 1
   getPosts(page.value).then(res => {
     data.value = res.data.data.rows
   })
-  page.value += 1
 }
 
 function prevPage() {
+  if (page.value > 1) {
+    page.value -= 1
+  }
   getPosts(page.value).then(res => {
     data.value = res.data.data.rows
   })
-  page.value -= 1
 }
 
 const router = useRouter()
@@ -48,16 +50,13 @@ const page = ref(1)
     </div>
 
     <div class="mr-10 m-auto">
-      <a-image
-        :width="64"
-        :height="64"
-        :src="item.coverPicture" />
+      <a-image :width="64" :height="64" :src="item.coverPicture" />
     </div>
 
   </div>
 
-  <div class="">
-    <a-button @click="prevPage">上一页</a-button>
+  <div>
+    <a-button class="mr-2" @click="prevPage">上一页</a-button>
     <a-button @click="nextPage">下一页</a-button>
   </div>
 </template>
