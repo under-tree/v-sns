@@ -1,4 +1,5 @@
 <script setup>
+import { message } from 'ant-design-vue'
 import { ref, reactive } from 'vue'
 import { useTokenStore } from '../stores/user.js'
 import { getCaptcha, userSignIn, userSignUp } from '../apis/api'
@@ -37,12 +38,14 @@ const onSignInFinish = values => {
     }
   )
   openSignInModal.value = false
+  message.success('登录成功')
 }
 
 const onSignUpFinish = values => {
   console.log('Success:', values)
   userSignUp(formState.username, formState.password, data.value.userKey, formState.authcode).then(res => { console.log(res) })
   openSignUpModal.value = false
+  message.success('注册成功')
 }
 
 const onFinishFailed = errorInfo => {
