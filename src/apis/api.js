@@ -29,6 +29,14 @@ export async function getProfile(userId) {
   }
 }
 
+export async function postProfile(data) {
+  return axios({
+    url: '/user/info',
+    method: 'put',
+    data: data,
+  })
+}
+
 export async function getPosts(page) {
   return axios.get(`/posts?page=${page}&pageSize=7`)
 }
