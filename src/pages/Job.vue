@@ -1,10 +1,21 @@
 <script setup>
-import ItemList from '../components/ItemList.vue'
+import Items from '../components/Items.vue'
+import { ref, onMounted } from 'vue'
+import { getJobs } from '../apis/api.js'
+
+onMounted(() => {
+  getJobs().then(res => {
+    data.value = res.data.data.rows
+  })
+})
+
+const data = ref([])
+
 </script>
 
 <template>
   <div class="max-w-150 m-0 m-auto">
-    <ItemList />
+    <Items path="job" :data="data" />
   </div>
 </template>
 
