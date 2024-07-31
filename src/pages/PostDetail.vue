@@ -3,18 +3,43 @@ import { LikeOutlined } from '@ant-design/icons-vue'
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { marked } from 'marked'
-import { getPost, newUpvote, newComment } from '../apis/api'
+import { getPost, getActivity, getJob, getResource, getNotice, newUpvote, newComment } from '../apis/api'
 
 onMounted(() => {
-  getPost(route.params.id).then(res => {
-    data.value = res.data.data
-  })
+  if (route.fullPath.startsWith('/posts')) {
+    isPost.value = true
+    getPost(route.params.id).then(res => {
+      data.value = res.data.data
+      console.log(res.data.data)
+    })
+  } else if (route.fullPath.startsWith('/activity')) {
+    getActivity(route.params.id).then(res => {
+      data.value = res.data.data
+      console.log(res.data.data)
+    })
+  } else if (route.fullPath.startsWith('/job')) {
+    getJob(route.params.id).then(res => {
+      data.value = res.data.data
+      console.log(res.data.data)
+    })
+  } else if (route.fullPath.startsWith('/resource')) {
+    getResource(route.params.id).then(res => {
+      data.value = res.data.data
+      console.log(res.data.data)
+    })
+  } else if (route.fullPath.startsWith('/notice')) {
+    getNotice(route.params.id).then(res => {
+      data.value = res.data.data
+      console.log(res.data.data)
+    })
+  }
 })
 
 const route = useRoute()
 const router = useRouter()
 const data = ref({ comments: { rows: [] } })
 const input = ref('')
+const isPost = ref(false)
 
 </script>
 
@@ -28,12 +53,8 @@ const input = ref('')
         <h1 class="ml-8 m-auto">{{ data.title }} </h1>
 
         <a-tooltip placement="left" color="blue">
-          <a-avatar
-            class="mr-8 m-auto hover:cursor-pointer"
-            :size="64"
-            :src="data.avatar"
-            @click="router.push(`/users/${data.userId}`)"
-          />
+          <a-avatar class="mr-8 m-auto hover:cursor-pointer" :size="64" :src="data.avatar"
+            @click="router.push(`/users/${data.userId}`)" />
           <template #title> 别忘了点赞哦 </template>
         </a-tooltip>
 
@@ -56,7 +77,7 @@ const input = ref('')
 
     <div class="markdown-body mb-6 p-6 rounded-xl shadow-2xl bg-white" v-html="marked(data.content || '')"></div>
 
-    <div class="h-64 mb-6 rounded-xl shadow-2xl bg-white">
+    <div v-if="isPost" class="h-64 mb-6 rounded-xl shadow-2xl bg-white">
       <a-textarea class="z-1" v-model:value="input" placeholder="发表评论" size="large" :rows="6" />
 
       <div class="mt-4 flex">
@@ -66,7 +87,7 @@ const input = ref('')
       </div>
     </div>
 
-    <div class="p-6 rounded-xl shadow-2xl bg-white">
+    <div v-if="isPost" class="p-6 rounded-xl shadow-2xl bg-white">
       <a-comment v-for="comment in data.comments.rows">
 
         <template #actions>
